@@ -23,4 +23,26 @@ router.get("/:id", async (request, response) => {
   }
 });
 
+router.post("/admin/login", async (request, response) => {
+  const creds = {
+    users: request.body.login_name
+  }
+
+  try {
+    const user = await User.findOne({
+      login_name: creds.users,
+    })
+
+    if(user) {
+      request.session.user = user;
+      response.status(200).send(user);
+    }
+    else {
+      response.status(400).send("Server error");
+    }
+  } catch (err) {
+    response.status(400).send("Server error");
+  }
+})
+
 module.exports = router;

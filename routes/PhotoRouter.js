@@ -3,10 +3,15 @@ const Photo = require("../db/photoModel");
 const User = require("../db/userModel")
 const { default: mongoose } = require("mongoose");
 const router = express.Router();
+// const multer = require('multer');
 
 // router.post("/", async (request, response) => {
   
 // });
+
+// var storage = multer.diskStorage({
+
+// })
 
 router.get("/:id", async (request, response) => {
     try {
