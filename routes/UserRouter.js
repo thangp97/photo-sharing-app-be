@@ -35,14 +35,20 @@ router.post("/admin/login", async (request, response) => {
 
     if(user) {
       request.session.user = user;
-      response.status(200).send(user);
+      console.log(request.session.user);
+      response.json(user);
+      // response.status(200).send({ message: "Login Success" });
     }
     else {
-      response.status(400).send("Server error");
+      response.status(400).send({ message: "Login failed" });
     }
   } catch (err) {
-    response.status(400).send("Server error");
+    response.status(400).send({ message: "Server error" });
   }
+})
+
+router.post("/admin/logout", async (request, response) => {
+  response.json({ message: "Logout Success" });
 })
 
 module.exports = router;

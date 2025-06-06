@@ -13,6 +13,32 @@ const router = express.Router();
 
 // })
 
+router.post("/commentsOfPhoto/:photo_id", async  (request,response) => {
+    try {
+        // if(!request.session.user) {
+        //     return response.status(400).send("Need Login");
+        // }
+        const photo_id = request.params.photo_id;
+        console.log(photo_id);
+        const addComment = {
+            comment: request.body.comment,
+            date_time: new Date(),
+            user_id: request.body.user_id,
+            _id: photo_id,
+        }
+        console.log(addComment);
+
+        const photo = await Photo.findById(photo_id, "_id comments");
+        console.log(photo);
+        photo.comments.push(addComment);
+        const savedComment = await photo.save();
+        response.status(200).send({ photo: savedComment});
+    } catch (err) {
+        response.status(400).send("Error");
+    };
+})
+
+
 router.get("/:id", async (request, response) => {
     try {
         const userId = mongoose.Types.ObjectId.isValid(request.params.id) 
