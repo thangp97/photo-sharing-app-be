@@ -3,7 +3,13 @@ const Photo = require("../db/photoModel");
 const User = require("../db/userModel")
 const { default: mongoose } = require("mongoose");
 const router = express.Router();
+const expressFileUpload = require('express-fileupload');
+const fileUpload = require("express-fileupload");
+const path = require('path');
+
 // const multer = require('multer');
+
+const imageFolder = path.join(__dirname,'..', "images");
 
 // router.post("/", async (request, response) => {
   
@@ -12,6 +18,27 @@ const router = express.Router();
 // var storage = multer.diskStorage({
 
 // })
+
+router.use(fileUpload());
+
+router.post("/photos/new", async (request,response) => {
+    console.log(request.files);
+    const { image } = request.files;
+    const { user_id } = request.body;
+    const imageName = image.name;
+    const comment = [];
+    console.log(user_id);
+    image.mv(path.join(imageFolder, image.name));
+    const newPhoto = new Photo({
+        file_name: imageName,
+        date_time: new Date(),
+        user_id: user_id,
+        comments: comment
+    });
+
+    await newPhoto.save();
+    response.status(200).json({message: "Succesful"});
+})
 
 router.post("/commentsOfPhoto/:photo_id", async  (request,response) => {
     try {

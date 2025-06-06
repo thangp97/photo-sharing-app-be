@@ -6,6 +6,8 @@ const UserRouter = require("./routes/UserRouter");
 const PhotoRouter = require("./routes/PhotoRouter");
 // const CommentRouter = require("./routes/CommentRouter");
 const session = require("express-session");
+const path = require('path');
+
 
 dbConnect();
 
@@ -19,6 +21,7 @@ app.use(
   }));
 app.use("/api/user", UserRouter);
 app.use("/api/photo", PhotoRouter);
+app.use('/images', express.static(path.join(__dirname, 'images')));
 
 app.get("/", (request, response) => {
   console.log(request.session);
